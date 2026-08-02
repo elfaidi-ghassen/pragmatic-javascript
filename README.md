@@ -4,21 +4,24 @@ Book by David Thomas and Andrew Hunt
 
 ## Table of Content
 
-- [Introduction](#introduction)
-- [Chapter 1: A Pragmatic Philosophy](#chapter-1-a-pragmatic-philosophy)
-  - [It's Your Life](#its-your-life)
-  - [The Cat Ate My Source Code](#2-the-cat-ate-my-source-code)
-  - [Software Entropy](#3-software-entropy)
-  - [Stone Soup and Boiled Frogs](#4-stone-soup-and-boiled-frogs)
-  - [Good-Enough Software](#5-good-enough-software)
-  - [Your Knowledge Portfolio](#6-your-knowledge-portfolio)
-  - [Communicate](#7-communicate)
-- [Chapter 2: A Pragmatic Approach](#chapter-2-a-pragmatic-approach)
-  - [The Essence of Good Design](#the-essence-of-good-design)
-  - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
-- [Footnotes](#footnotes)
+- [Pragmatic Programmer](#pragmatic-programmer)
+  - [Table of Content](#table-of-content)
+  - [Introductions](#introductions)
+  - [Chapter 1: A Pragmatic Philosophy](#chapter-1-a-pragmatic-philosophy)
+    - [It's Your Life](#its-your-life)
+    - [2. The Cat Ate My Source Code](#2-the-cat-ate-my-source-code)
+    - [3. Software Entropy](#3-software-entropy)
+    - [4. Stone Soup and Boiled Frogs](#4-stone-soup-and-boiled-frogs)
+    - [Tip 6: Be a Catalyst for Change](#tip-6-be-a-catalyst-for-change)
+    - [5. Good-Enough Software](#5-good-enough-software)
+    - [6. Your Knowledge Portfolio](#6-your-knowledge-portfolio)
+    - [7. Communicate](#7-communicate)
+  - [Chapter 2: A Pragmatic Approach](#chapter-2-a-pragmatic-approach)
+    - [The Essence of Good Design](#the-essence-of-good-design)
+    - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
+  - [Footnotes](#footnotes)
 
-## Introduction
+## Introductions
 
 > Programming is about making the future less painful – Saron Yitbarek
 
@@ -407,6 +410,7 @@ def neighbors(cell) -> list[Cell]:
 
 - So maybe it's fine to have such comments.
 - But the gist of the matter: you should not restate what the code does as comments, that's not DRY.
+- 🗨 Just noticed, the [table of content](#table-of-content) is certainly a DRY violation, it always keeps going out of sync and I have to update it frequently. So I searach for a solution and found an VS code extention named Markdown All In One that auto updates the TOC.
 
 ## Footnotes
 
