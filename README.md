@@ -4,6 +4,20 @@ Book by David Thomas and Andrew Hunt
 
 ## Table of Content
 
+- [Introduction](#introduction)
+- [Chapter 1: A Pragmatic Philosophy](#chapter-1-a-pragmatic-philosophy)
+  - [It's Your Life](#its-your-life)
+  - [The Cat Ate My Source Code](#2-the-cat-ate-my-source-code)
+  - [Software Entropy](#3-software-entropy)
+  - [Stone Soup and Boiled Frogs](#4-stone-soup-and-boiled-frogs)
+  - [Good-Enough Software](#5-good-enough-software)
+  - [Your Knowledge Portfolio](#6-your-knowledge-portfolio)
+  - [Communicate](#7-communicate)
+- [Chapter 2: A Pragmatic Approach](#chapter-2-a-pragmatic-approach)
+  - [The Essence of Good Design](#the-essence-of-good-design)
+  - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
+- [Footnotes](#footnotes)
+
 ## Introduction
 
 > Programming is about making the future less painful – Saron Yitbarek
@@ -41,15 +55,15 @@ I have only one method that I recommend extensively—it's called think before y
 
 ## Chapter 1: A Pragmatic Philosophy
 
-1. It's Your Life
+### It's Your Life
 
-Tip 3: You Have Agency
+> Tip 3: You Have Agency
 
 🗨 The book starts with some motivational speech - but it's not that annoying; it seems just some useful and pragmatic (= practical) tips the authors have learned over the years.
 
 The authors have noticed that many programmers are very concerned and maybe feeling uncomfortable at their jobs or life, but they are doing nothing, even though this field is one of the best fields when it comes to agency; there are a million things you can do!
 
-2. The Cat Ate My Source Code
+### 2. The Cat Ate My Source Code
 
 Take responsibility for your mistakes and shortcomings.
 It's not a fun thing to happen; it's not easy to admit mistakes, but in my opinion, I think it's honorable.
@@ -63,42 +77,42 @@ Tip 4: Provide Options, Don't Make Lame Excuses
 The section ends with a very practical tip: instead of offering lame excuses when something goes wrong, explain what can be done and offer different options.
 Another pro tip: don't just say 'I don't know'; follow it up with 'I'll figure it out'
 
-3. Software Entropy
+### 3. Software Entropy
 
 - 🗨 Entropy here is the thermodynamic entropy and not Shannon's Entropy (Information Theory)
 - Entropy in thermodynamics is a 'measure of disorder'. And by the laws of physics, any system tends toward the maximum entropy, that is, it tends towards disorder.
 - When the software is chaos The author calls it a 'software rot'; they don't seem to be fond of the more optimistic term 'technical debt', because it implies the 'debt' will be paid back, but it often isn't the case.
 
-Tip 5. Don't Live with Broken Windows
+> Tip 5. Don't Live with Broken Windows
 
 - A broken window in a building is all it takes to instill a feeling that the building is neglected and slowly drives a feeling of hopelessness, and slowly the building will get worse and worse.
 - Same goes for software (and many things in life): you should fix problems as soon as you find them, don't let them rot, at the very least show some effort, show that you care. Open an issue for the problem, add some stub 'not implemented yet' message, have a plan to refactor bad code, etc.
 - The book claims that such small things, with enough time, are one of the reasons that could ruin even the biggest of projects. The effect of neglect compounds and changes how everyone feels about the project.
 - 🗨 I've read that 'Broken Windows Theory' has not been proved yet and there are some discussions about it. But I like the advice, and I think it's valid. It's never a good idea to leave many 'open files' in the background. It's like having monsters lurking in the back of your mind!
 
-4. Stone Soup and Boiled Frogs
+### 4. Stone Soup and Boiled Frogs
 
 Sometimes you know what the right thing to do is, something that will certainly benefit the project, but you'll have to ask for permissions, and it's not easy to convince others, or it takes too much time. The book recommends that in such case you should think of the simplest thing you can ask for and you won't get rejected, after that it's okay to try whetting others' appetite by showing them a 'glimpse of the future', basically saying 'Of course it would be nicer if we add add this or that feature', but pretend it's not that important and wait, there is a good change they would tell you to implement it.
 
 🗨 This is a general social skill I someone taught me, that is, not trying too hard to offer what you have if the other part doesn't seem to care, like when you want to advise someone who doesn't seem to care, sometimes talking too much doesn't help and makes your words less meaningful, this is clearly true for school teachers for instance, the teacher's words might lose impact if they repeat it too many times. Sometimes silence could intrigue the student because it's different and makes them want to hear from you.
 
-Tip 6: Be a Catalyst for Change
+### Tip 6: Be a Catalyst for Change
 
 The book brings up the famous Boiled Frogs story, that if you throw a frog in some hot water, it will jump immediately, but if you gradually heat the water, it won't notice. That's not what happens in real life, but it's the moral of the story is worth noting.
 
-Tip 7: Remember the Big Picture
+> Tip 7: Remember the Big Picture
 
 You need to know what's going on around you in the project and in life in general. You need to understand the big picture.
 The book even recommends that you develop situational awareness and observation skills; for instance, close your eyes. - well you can't read like that - but try to count the number of light bulbs in the room you're in, the number of people in the room, etc. It's a good idea to develop this skill and sharpen your mind for details, and do the same for your projects.
 
-5. Good-Enough Software
+### 5. Good-Enough Software
 
 You should know what the minimum quality required for the project, you can spend a lot of time perfecting parts of the system, but don't overdo it. It depends on the kind of software you're working on, but in most cases, releasing 'good enough' software
 But you need to define what's 'good enough' for your project; it surely doesn't mean low-quality code and neglecting important things like security.
 
-Tip 8: Make Quality a Requirements Issue
+> Tip 8: Make Quality a Requirements Issue
 
-6. Your Knowledge Portfolio
+### 6. Your Knowledge Portfolio
 
 - Tech changes a lot, and you need a strategy for coping.
 - Your knowledge portfolio encompasses many things, including all of your experiences, domain knowledge, CS knowledge, etc.
@@ -108,7 +122,7 @@ Tip 8: Make Quality a Requirements Issue
 - Variety matters; the more different the things you know, the better. You certainly must master at least one technology, but you should absolutely learn different technologies.
 - It's risky but very rewarding to learn an emerging technology.
 
-Tip 9: Invest Regularly in Your Knowledge Portfolio
+> Tip 9: Invest Regularly in Your Knowledge Portfolio
 
 Some nice goals to set
 
@@ -140,7 +154,7 @@ Isolation can be deadly to your career;
 
 Tip 10: Critically Analyze What You Read and Hear
 
-7. Communicate
+### 7. Communicate
 
 Tip 11: English is Just Another Programming Language
 
@@ -154,9 +168,9 @@ The book gives some communication tips that feel generic but do not mean it's de
 
 🗨 Speaking of making documents look good, I've been using Typst for the last year, and it's been great. I like it more than LaTeX[^latex]; it's great for writing pretty much all types of documents.
 
-Tip 12: It's Both What You Say and The Way You Say It
+> Tip 12: It's Both What You Say and The Way You Say It
 
-Tip 13: Build Documentation, Don't Bolt It On
+> Tip 13: Build Documentation, Don't Bolt It On
 
 - Don't add documentation as an afterthought; it should be part of your workflow.
 - Add comments to modules and exported functions to help the other devs understand how to use them.
@@ -183,7 +197,7 @@ function calculateTotal(price: number, taxRate: number): number {
 
 ![VS code](/media/jsdoc.jpg)
 
-## Chapter 2: A Pragmatic Philosophy
+## Chapter 2: A Pragmatic Approach
 
 ### The Essence of Good Design
 
@@ -403,7 +417,3 @@ def neighbors(cell) -> list[Cell]:
 [^api]: This term is used in many different contexts; it's not just about web APIs; it could mean a bunch of library functions that you can use without needing to think about how they work inside. You just need to understand the expected inputs and outputs.
 
 [^exported]: i.e. library functions you can import from somewhere else, let's say I create a module in JS (i.e. a JS file) and created some logging or security functions, when I use the export statement people can import them from other places and use them.
-
-```
-
-```
