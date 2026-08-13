@@ -2,28 +2,42 @@
 
 Book by David Thomas and Andrew Hunt
 
+This is the JavaScript edition
+
 ## Table of Content
 
 - [Pragmatic Programmer](#pragmatic-programmer)
   - [Table of Content](#table-of-content)
-  - [Introductions](#introductions)
+  - [Introduction](#introduction)
   - [Chapter 1: A Pragmatic Philosophy](#chapter-1-a-pragmatic-philosophy)
-    - [It's Your Life](#its-your-life)
+    - [1. It's Your Life](#1-its-your-life)
     - [2. The Cat Ate My Source Code](#2-the-cat-ate-my-source-code)
     - [3. Software Entropy](#3-software-entropy)
     - [4. Stone Soup and Boiled Frogs](#4-stone-soup-and-boiled-frogs)
-    - [Tip 6: Be a Catalyst for Change](#tip-6-be-a-catalyst-for-change)
     - [5. Good-Enough Software](#5-good-enough-software)
     - [6. Your Knowledge Portfolio](#6-your-knowledge-portfolio)
     - [7. Communicate](#7-communicate)
   - [Chapter 2: A Pragmatic Approach](#chapter-2-a-pragmatic-approach)
     - [The Essence of Good Design](#the-essence-of-good-design)
     - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
+    - [Orthogonality](#orthogonality)
+    - [11. Reversibility](#11-reversibility)
   - [Footnotes](#footnotes)
 
-## Introductions
+## Introduction
 
 > Programming is about making the future less painful – Saron Yitbarek
+
+🗨 And it's not what you might think :D
+🗨 Programming is about making your future, and the future of programmers who will touch your code later: less painful. That's what good software engineering is about.
+🗨 It reminds me of a presentation by Matthias Felleisen about what he calls Social Responsibility of a Programmer. I expected it to be about our role in society, "We have the responsibility to bring society forward!", "we shape the future", no no no... nothing of that sort. From his point of view software developement is a _social debt_ towards developers who will maintain the code after you. It could be you some years later or "someone who isn't even born yet". I think that even thought it's not complete, it is a fresh and humble prespective and doesn't glorify the field. Yes it _is_ challenging work, but as someone one described it: "it's not an act of heroism". We often fall into this idea of being a [genius programmer](https://youtu.be/0SARbwvhupQ?si=aNbnef-WN5Kh7IQA) or something when we are simply part of the service sector, we're not too different from plumbers, carpenters, or doctors; while of course while having some unique properties. But we're just offering a service, we are not like philosophers, policy makers, intellectuals and thinkers who change people's lives and beliefs about the world. and this does not mean we don't have ethical responsbility or that the job is worthless. And well, I truly love this field so much. That's why I'm reading this book anyway. But once I understood this idea I felt humbled.
+
+🗨 I was reading the introduction of Clean Code, which I plan to read after this book.
+In the introduction the author says:
+
+> You and I, we programmers, rule the world. Other people think they rule the world, but then they hand the rules to us, and _we_ write those rules — the software.
+
+🗨 And to be fair, just after that Robert Martin explained how can bad software damage society and even kill people, and we must learn how to become professionals. But that line really made me uncomfortable honestly.
 
 🗨 The book quickly mentions the issue of terminology, which I really enjoy
 
@@ -58,7 +72,7 @@ I have only one method that I recommend extensively—it's called think before y
 
 ## Chapter 1: A Pragmatic Philosophy
 
-### It's Your Life
+### 1. It's Your Life
 
 > Tip 3: You Have Agency
 
@@ -72,10 +86,10 @@ Take responsibility for your mistakes and shortcomings.
 It's not a fun thing to happen; it's not easy to admit mistakes, but in my opinion, I think it's honorable.
 The book also explains that the team should be able to rely on and trust you. And that trust is built through action; a good team is a team built on trust and interdependence.
 
-🗨 This, for some reason remind of the famous scene you see in too many films, 'It's not your fault'. As if being mistaken is something to be ashamed of. To me, a good friend or teammate is someone who'd tell you, 'Dude, you messed up, but it's okay; let's find a solution'.
+🗨 This, for some reason remind of the famous scene you see in too many films, (It's not your fault). As if being mistaken is something to be ashamed of. To me, a good friend or teammate is someone who'd tell you, 'Dude, you messed up! but it's okay, let's find a solution'.
 🗨 I understand the culture we're starting to have, the culture of not naming things what they are. It's comforting, and there is nothing wrong with seeking comfort; we all do want that. But I think it's leading us to even worse environments.
 
-Tip 4: Provide Options, Don't Make Lame Excuses
+> Tip 4: Provide Options, Don't Make Lame Excuses
 
 The section ends with a very practical tip: instead of offering lame excuses when something goes wrong, explain what can be done and offer different options.
 Another pro tip: don't just say 'I don't know'; follow it up with 'I'll figure it out'
@@ -89,9 +103,11 @@ Another pro tip: don't just say 'I don't know'; follow it up with 'I'll figure i
 > Tip 5. Don't Live with Broken Windows
 
 - A broken window in a building is all it takes to instill a feeling that the building is neglected and slowly drives a feeling of hopelessness, and slowly the building will get worse and worse.
-- Same goes for software (and many things in life): you should fix problems as soon as you find them, don't let them rot, at the very least show some effort, show that you care. Open an issue for the problem, add some stub 'not implemented yet' message, have a plan to refactor bad code, etc.
+- Same goes for software (and many things in life): you should fix problems as soon as you find them, don't let them rot, at the very least show some effort, show that you care. Open an issue for the problem, add some stub 'not implemented yet' message, have a plan to refactor[todo: link to refactor section later] bad code, etc.
 - The book claims that such small things, with enough time, are one of the reasons that could ruin even the biggest of projects. The effect of neglect compounds and changes how everyone feels about the project.
 - 🗨 I've read that 'Broken Windows Theory' has not been proved yet and there are some discussions about it. But I like the advice, and I think it's valid. It's never a good idea to leave many 'open files' in the background. It's like having monsters lurking in the back of your mind!
+
+TODO: examples
 
 ### 4. Stone Soup and Boiled Frogs
 
@@ -99,7 +115,7 @@ Sometimes you know what the right thing to do is, something that will certainly 
 
 🗨 This is a general social skill I someone taught me, that is, not trying too hard to offer what you have if the other part doesn't seem to care, like when you want to advise someone who doesn't seem to care, sometimes talking too much doesn't help and makes your words less meaningful, this is clearly true for school teachers for instance, the teacher's words might lose impact if they repeat it too many times. Sometimes silence could intrigue the student because it's different and makes them want to hear from you.
 
-### Tip 6: Be a Catalyst for Change
+> Tip 6: Be a Catalyst for Change
 
 The book brings up the famous Boiled Frogs story, that if you throw a frog in some hot water, it will jump immediately, but if you gradually heat the water, it won't notice. That's not what happens in real life, but it's the moral of the story is worth noting.
 
@@ -336,7 +352,58 @@ You can imagine that each function will be in a separate module (i.e file) since
 
 > It's not a question of whether you'll remember: it's a question of when you'll forget.
 
-- DRY is not just about code duplication (copy pasting code in many places)! it's part of it but DRY is much more than that. The real problem is expressing the same knowledge in many places.
+- 🗨 Let's star with a simple example of DRY about code duplication. We'll later discuss the bigger picture about DRY, but if you have never heard about DRY before this will give you an idea.
+
+- 🗨 Imagine we have some console app where we print information about items, we often print formatted price in many places.
+
+```ts
+function printItemDetails(item) {
+  console.log("NAME:")
+  console.log(item.name)
+  console.log("PRICE:")
+  console.log('$' + item.price.toFixed(2))
+  ...etc
+}
+...
+function printTotalPrice(items) {
+  total = sum(items, item => item.price)
+  console.log(`Total: $ ${total.toFixed(2)}`)
+  ...etc
+}
+...
+```
+
+🗨 let's say you use that price formatting a hundred time in the project.
+Suddenly you realize you want it to use `toFixed(4)`, or maybe you want to update the format based on the locale[^locale] of the user, or anything related to the format. you'd need to go every place you used it and update it! You'd use `grep` or your editor's search and go over all files that include the formatting. That's a pain! That's not DRY code.
+
+🗨 You often hear people saying expressions like "this code is DRY" or "We could do this to make more DRY". Maybe start using it too!
+
+🗨 One solution would be abstracting the formatting into a function:
+
+```ts
+function formatPrice(prince) {
+  return '$' + price.toFixed(2)
+}
+function printItemDetails(item) {
+  console.log("NAME:")
+  console.log(item.name)
+  console.log("PRICE:")
+  console.log(formatPrice(item.price))
+  ...etc
+}
+...
+function printTotalPrice(items) {
+  total = sum(items, item => item.price)
+  console.log(`Total: ${formatPrice(total)}`)
+  ...etc
+}
+...
+```
+
+🗨 This is much more DRY. You could even take a step further and pass the currency as an argument[^arg-vs-param] or use pre-built functions to handle the locale. It's very ETC.
+
+- Common misconception: "DRY is about code duplication"
+- _IMPORTANT_: DRY is not _just_ about code duplication (copy pasting code in many places)! it's part of it but DRY is _much more_ than that. The real problem is expressing the same _knowledge_ in many places.
 - A bad sign: when you notice a single change in requirements causes you to modify code in many different places. It could mean your code is not DRY.
 - IMPORTANT: Not all code duplication is knowledge duplication!
 
@@ -358,8 +425,8 @@ def verify_quantity(value):
 
 - Be careful about code duplication in comments. You should not comment every single function you create!
 - With enough time, the inevitable will happen and code and comments will go out of sync.
-- Sometimes youd find comments that are just re-stating the code logic and the steps done.
-- 🗨 It occured to me that it's as if you're writing the program in two programming languages each time. It's as if you're writing the program in a DSL then writing it again in a programming language!
+- Sometimes you'd find comments that are just re-stating the code logic and the steps done.
+- 🗨 It occurred to me that it's as if you're writing the program in two programming languages each time. It's as if you're writing the program in a DSL then writing it again in a programming language!
 - 🗨 Here is an example I made up::
 
 ```js
@@ -410,7 +477,212 @@ def neighbors(cell) -> list[Cell]:
 
 - So maybe it's fine to have such comments.
 - But the gist of the matter: you should not restate what the code does as comments, that's not DRY.
-- 🗨 Just noticed, the [table of content](#table-of-content) is certainly a DRY violation, it always keeps going out of sync and I have to update it frequently. So I searach for a solution and found an VS code extention named Markdown All In One that auto updates the TOC.
+- 🗨 Just noticed, the [table of content](#table-of-content) is certainly a DRY violation, it always keeps going out of sync and I have to update it frequently. So I searched for a solution and found a VS code extention named Markdown All In One that auto updates the TOC.
+
+- DRY violation could also happen in data
+  - 🗨 note that when some people use "data" they often mean the data structure, that is, the data representation of the knowledge.
+
+- You should not expose the data structure because then all code that uses it will be coupled with it.
+
+- Here is an example. Let's say I have a configuration module
+
+```js
+...
+class Configuration {
+  static PORT = 3001;
+}
+export default Configuration;
+```
+
+other code might use it.
+
+```js
+import config from "../util/config"
+...
+server.start(config.PORT, () => {console.log("server started...")})
+```
+
+Now, if later you wanted to return different port based some environment variable.
+you want to return `process.env.PORT` if the `NODE_ENV` is "production", otherwise 3001. And later this could even get more complicated.
+
+```ts
+class Configuration {
+  static PORT = "??????"; // you could put all the logic here but it will be a mess
+}
+export default Configuration;
+...
+```
+
+But now we're stuck, the code that uses PORT is coupled.
+That's why it's better to use a method instead. (often called "encapsulation", i.e. using getters and setters)
+Now if we change it like this:
+
+```ts
+class Configuration {
+  static getPORT() {
+    return process.env.NODE_ENV === "production" ? process.env.PORT : 3001;
+  }
+}
+export default Configuration;
+```
+
+But sadly now you need to go through every function that used to use `config.PORT` and change it to `config.getPORT()`.
+This is why it's better to start with such an approach and avoid exposing the internal structure.
+
+By the way it's not true to say the "encapsulation" is an OOP concept. It's actually a general concept in programming. You could for instance use it in functional programming.
+
+```python
+def create_point(x, y):
+  return (x, y)
+def get_x(point):
+  return point[0]
+def get_y(point):
+  return point[1]
+
+def norm(point):
+  return sqrt(get_x(point) ** 2 + get_y(point) ** 2)
+```
+
+🗨 You could easily now update the data representation of the point (e.g. using a list instead of tuple) and you could update `get_x` and `get_y` without ever needing to update the code that uses them. We say that the code is not _coupled_[^couple].
+
+- ⚠ Some duplication is inevitable, sometimes you export functions, REST APIs, etc. And the users of your APIs need to know some information about, the expected format, paramters, etc. That is a violation of the DRY principle because it is a duplication of knowledge. But it cannot be avoided. Imagine the backend changes the endpoint `POST /api/products` to accept different information about the product, the frontend has to be updated too. But there are ways to cope with it and minimize the pain.
+- Duplication Across APIs
+  - The book mentions using OpenAPI as a solution
+  - it looks amazing, never heard of it before, I also heard many frameworks like nestjs integrates it well. It allows generating API documentation and allows generating the frontend services automatically! #TODO: try this stuff
+
+content to read or watch:
+- https://dev.to/senior-debugger/how-we-streamlined-frontend-development-with-openapi-4dn2
+- https://www.youtube.com/watch?v=_2-paQxpF7E
+- https://www.youtube.com/watch?v=3IKbLDbq5ww&time_continue=393&-embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F
+- https://youtu.be/0hx17FfzrKM?si=WVjs8fZC15Rmq2V_
+
+
+I noticed that the frontend for instance would call the endpoints but it's not if we change the backend endpoint we need to remember to update the frontend endpoint (in the fetch function) 
+
+it's interesting, I heard nest uses OpenAPI and it allows for generating the frontend services automatically from the OpenAPI spec. this makes it more DRY.
+- [ ] Learn this stuff
+
+
+- Interdeveloper duplication
+- it's really hard to detect
+- communication matters here.
+  the problem is duplication at a module-level
+  sometimes it not clear where some functionality should be implemented, it's not clear under what "area of responsibility" it is. so it gets implemented many times.
+- communication is key here.
+
+- assign a team member as the project librarian, who helps the exchange of knowledge. I like this idea.
+
+- A source tree (or source-tree) has two main meanings: a folder hierarchy containing computer program source code
+
+- create a shared place where people add their helpers, etc.
+  > Tip 16: Make It Easy to Reuse
+
+all you can do is to try to foster an environment where sharing stuff easier to things don't get duplicated.
+
+> This is not easy, people won't actually do it
+
+Just do your best.
+
+
+### Orthogonality
+
+- This is one of the topics that's often taught implicitely in other different appraoches and techniques. But it's very useful.
+- In math, two vectors like (0, 1) and (1, 0) are orthogonal, whith means they are _independent_.
+- A programming _orthogonality_ is some kind of independence or decoupling
+  - one a change in one thing doesn't affect a change in another thing
+    > Tip 17: Eliminate Effects Between Unrelated Things
+- Let's say you created a dekstop GUI for some project, then realized you needed a mobile interface. If the code is orthogonal you should be able to do that easily without updating the backend.
+- Components[^component] should be "self-contained", with a single well-defined purpous (often called _cohesion_[^cohesion])
+- This helps make the system more ETC, you can change a component's internals without worrying it will affect other components. (As long as you don't change the API)
+- There are many benefits for having orthogonal components
+  - ETC, it's all about ETC
+  - Problems are isolated, they don't propagate a lot in the system, it's easier to fix and replace.
+  - Easier to test, reuse, ETC, etc.
+    - because you can tests each module, they don't depend on each others much
+      - hence you could easily create unit tests, which are often simpler and easier to specify than integration tests
+      - it's recommeneded unit tests should part of the build process
+    - #todo example of how it's easier to tes
+- Developers are familiar with the importance of orthogonal system, but they often use terms like "modular", "component-based" or "layered" systems.
+- A Layerd appraoch is nice because each later only relies the abstractions (API) provided by the layers below it. So there is a reduced risk of runaway dependencies.
+- "dependencies" here basically means importing something from another module or some shared state, etc.
+- 🗨 e.g. the the routes in your backend would depend on a "controller" layer where you implement the logic, and the controller would depend on the database layer (repositories). But the backend routes would not use call the database directly! It must go through the controller.
+- 🗨 There is a nice package that let's you define the valid dependencies in your project called `dependency-cruiser`. You can use a `pre-commit` hook (basically a bash script) and whenever you commit it will verify all your imports and check if they don't violoate the architecture you created. e.g. if the route `/api/products` imports `ProductsRpository` and calls `productsRpository.getAll()` that would error out. You can only call `productsController.listProducts()`
+- How to test if your design is orthogonal: ask yourself "If I drastically change the requirements for some functionality, how many modules will be affected"? The answer should _one_ (of course you realistically more than one module will be affected, but in you look carefully you should find that the changes truly related to the functionality happened in one module)
+
+- Unit of Work/Transaction Pattern
+
+OK I didn't know about this!!!!!!
+About transactional operations!
+EJB is a neat example about this.
+In fact I studied in college in a class about JEE
+It uses the "decorator pattern", i.e. using annotations to add functionality.
+it's super neat. it's declarative.
+
+avoid global data as much as you can.
+putting global variables in a JS module might create unncesariy linkage.
+In Java people might use singletons to create global patterns, it might create unncesariy linkage
+
+sections to re-read:
+
+- orthogonality
+
+- writing unit tests is a good test for orthogonality, if when you're writing a unit test for a module you find yourself importing so many other things, it means the module you're testing isn't well decoupled.
+- fixing bugs too are a good way to assess it. you can see how localized the bugfix is, that is, if fixing an issue causes you to modify so many files, that's a bad sign.
+  - tag bug fixes in git 🗨 i.e. the commit message e.g. use convention like `fix: some problem`
+  - you can later create monthly reports analyzing the number of affected files in the bugfixes. you could get some good insights.
+  - #todo
+- DRY focuses on the duplication of knowledge, while orthogonality is about interdependency between modules. They are closely related. Because at the end of the day, it's all about ETC, we just want to reduce the pain of change.
+
+🗨 **Assignment**:
+
+- command line tools vs GUI[^gui] tools as software:
+  - which are more orthogonal?: in terms of software design, command line tools win. we can combine them easily (e.g. using pipes) because they are completely independent and a proof of this is how some command line tools can be used in ways the author had never even imagiend. each process just outputs some string and it doesn't care what you do with it. Each command often focuses on completing one single task (e.g. grep for searching in files)
+  - GUI tools, as software, aren't very orthogonal, often they do so many things and have a UI, so updating a feature might introduce changes in UI or other places. And from the user persepective they are harder to combine with other tools.
+  - It's also much easier to build your own custom command line tools and combine them with the rest of the commands, unlike GUI tools.
+    this is actually really interesting, because this is really what orthogonality is about. reducing dependencies as much as possible.
+    This is an example from the book: for instance let's say want to go over a file line by line and split it into fields.
+    you could write
+
+```ts
+class Split {
+  constructor(filename: File) {...}   // open the fle
+  readNextLine() {...}          // move to the next file
+  getField(n) {...}             // get nth field in current line
+}
+```
+
+🗨that isn't very orthogonal because you are assuming the input will always will come from a file, now imagine this class grows and becomes quite complicated, having tens of functionalties, then suddenly you realize you don't want to read the lines from a file. all the code that was using this class was using `readNextLine` and expecting a behavior, but it's like a "leaky abstraction", now you're stuck with it. like a GUI.
+a better approach would be like this:
+
+```ts
+class Split {
+  constructor(line: string) {}   // takes a string
+  getField(n) {...}             // get nth field in the string
+}
+```
+
+now if you can use this anywhere, you for instance read a file, go line by line and call this class, but now there ist's not coupled. you can use this the way you want. like a command line.
+
+🗨 **Assignment**:
+
+- todo: multiple inheritance vs multiple interfaces vs mixins
+- thoughts: delegartion "has a" seems more orthogonal than "is a", something beings something else sounds complicated :D
+
+data and transformation
+
+a class couples code to data, often a code thing (cohesive)
+but if you're not careful it can lead to ugly interfaces.
+
+in FP languages it is encouraged to create small decoupled functions that take some data and output some data, and you can combine those functions. It's often good. But that can introduce some coupling so if you change data shape of some function you have to make sure it doesn't break other things
+hmm... I need to think about this
+
+### 11. Reversibility
+
+- 🗨 Remember, good software is pretty much all about ETC, easier to change. the world is always changing.
+- You won't always the best decisions, you might pick a database from some vendor[^vendor] (let's say MySQL or Postgres) then at some point you realize it's too slow for your use case, so want to switch to a document database (let's say Mongo). But you're mid project now, if you haven't been writing code that is reversable, you're out of luck.
+- 🗨 You know, I feel is is a humbling idea, that you don't trust your capacity, you're a human being, you won't always know the right thing to do, hence the best you can do in such a world is to write code that is easy to change.
+
+DAO (Data Access Object)
 
 ## Footnotes
 
@@ -418,6 +690,12 @@ def neighbors(cell) -> list[Cell]:
 
 [^latex]: Pronounced as /latek/
 
-[^api]: This term is used in many different contexts; it's not just about web APIs; it could mean a bunch of library functions that you can use without needing to think about how they work inside. You just need to understand the expected inputs and outputs.
+[^api]: This term is used in many different contexts; it's not just about web APIs; it could mean a bunch of library functions that you can use without needing to think about how they work inside. You just need to understand the expected inputs and outputs. So when you hear the term think of a JS module exposing some functions, those functions are the API of that module.
 
 [^exported]: i.e. library functions you can import from somewhere else, let's say I create a module in JS (i.e. a JS file) and created some logging or security functions, when I use the export statement people can import them from other places and use them.
+
+[^cohesion]: "cohesion refers to the degree to which the elements inside a module belong together." - Wikipedia. The books says "when coupling is good, we call it cohesion"
+
+[^component]: software components. it's basically like a module in JS, it's a very general term. anything with some implementation and an exposed API.
+
+[^GUI]: many pronounce it as "gooey"
