@@ -22,6 +22,8 @@ This is the JavaScript edition
     - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
     - [Orthogonality](#orthogonality)
     - [11. Reversibility](#11-reversibility)
+    - [12. Tracer Bullets](#12-tracer-bullets)
+    - [13. Prototypes and Post-it Notes](#13-prototypes-and-post-it-notes)
   - [Footnotes](#footnotes)
 
 ## Introduction
@@ -551,17 +553,17 @@ def norm(point):
   - it looks amazing, never heard of it before, I also heard many frameworks like nestjs integrates it well. It allows generating API documentation and allows generating the frontend services automatically! #TODO: try this stuff
 
 content to read or watch:
+
 - https://dev.to/senior-debugger/how-we-streamlined-frontend-development-with-openapi-4dn2
 - https://www.youtube.com/watch?v=_2-paQxpF7E
 - https://www.youtube.com/watch?v=3IKbLDbq5ww&time_continue=393&-embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F
 - https://youtu.be/0hx17FfzrKM?si=WVjs8fZC15Rmq2V_
 
-
-I noticed that the frontend for instance would call the endpoints but it's not if we change the backend endpoint we need to remember to update the frontend endpoint (in the fetch function) 
+I noticed that the frontend for instance would call the endpoints but it's not if we change the backend endpoint we need to remember to update the frontend endpoint (in the fetch function)
 
 it's interesting, I heard nest uses OpenAPI and it allows for generating the frontend services automatically from the OpenAPI spec. this makes it more DRY.
-- [ ] Learn this stuff
 
+- [ ] Learn this stuff
 
 - Interdeveloper duplication
 - it's really hard to detect
@@ -582,7 +584,6 @@ all you can do is to try to foster an environment where sharing stuff easier to 
 > This is not easy, people won't actually do it
 
 Just do your best.
-
 
 ### Orthogonality
 
@@ -682,7 +683,55 @@ hmm... I need to think about this
 - You won't always the best decisions, you might pick a database from some vendor[^vendor] (let's say MySQL or Postgres) then at some point you realize it's too slow for your use case, so want to switch to a document database (let's say Mongo). But you're mid project now, if you haven't been writing code that is reversable, you're out of luck.
 - 🗨 You know, I feel is is a humbling idea, that you don't trust your capacity, you're a human being, you won't always know the right thing to do, hence the best you can do in such a world is to write code that is easy to change.
 
-DAO (Data Access Object)
+The way it's implemented is using the _Repository_ pattern (sometimes called DAO in the Java world) the idea is so simple, you'd make an interface `ClientRepository` containing all the mothods you need,e.g. `save`, `update`, `getAllByName` or whatever you need. Then you'd implement it. You'd create a class `PostgresClientRepository` and implement it. You can instead use an ORM like Drizzle which abstracts many SQL details so that it's so easy to switch between realtional databases. so you'd have `DrizzleClientRepository`. Now if you want to switch to Mongo, you'd just create `MongoClientRepository`. But how is that helpful?
+Main idea: the application code should not know how it gets the data, use the interface to abstract it away.
+
+```
+functoin getClientRepository() {
+  return new PostgresRepository()
+}
+...
+GET("/api/client", (request, response) => {
+  ...
+  let service = new GetClientService(getClientRepository())
+  return service.execute()
+})
+```
+
+we created the `getClientRepository` so we have a single point from which we can change all repositories, we can simply return `MongoClientRepository` if we want.
+
+- [ ] todo: create a very simple app using postgres then change it to use mongo
+
+This approach is also nice for testing! You can easily create `InMemoryClientRepository` that implements ClientRepository, and test the use cases using it. So you'd create unit test for `GetClientService`, but instead of passing a postgres client repository, you pass the inMemory one.
+
+BUT, I find it annoying because now whenever you update the PostgresRepository, you also need to remember to update the inMemory one. an integration test using the real database seems to make more sense to me. But unit tests using InMemoryClientRepository are honestly so dang fast and they do catch problems.
+
+> Tip 18: There are no final decisions
+
+- Don't assume things will stay the same, one day the client wants a web app, tomorrow he might want a mobile app. databases change, libraries changes. Your code must be able to adapt.
+  - 🗨 [Interview with Senior JS Developer 2024](https://youtu.be/aWfYxg-Ypm4?si=8mJxm35_zv58stuT)
+  - "Don't write this down, next week all of this is gonna change" :D
+- Software architecture is constantly changing, trends change so fast. The best you can do is making sure your software is adaptable, that it's easy to change and reversible.
+- Always wrap third-part APIs behind your own abstraction layers.
+
+> Tip 19: Forgo Following Fads
+
+### 12. Tracer Bullets
+
+- soldiers use tracer bullets to help us hit targets because they offer immediate feedback, it makes it easier to see if you hit the target or not.
+- we also needs such tracers in software development; basically we want to see if we're hitting or not, are we going in right direction?
+- You would do this by choosing some important feature
+- Since configuration and project setup is complicated these days, especially with the number of dependencies, The first useful tracer is usually just getting the project to work, end to end, all the layers are working fine and integrated.
+  - That's very helpful for the team too, having a structure to work with it much batter than staring at an empty code base. It improves everyone's productivity.  
+- 🗨 Is the gun even firing, it doesn't matter if we hit the target or not, I just want to see it firing. I want to see the first tracer!
+- 🗨 I love doing this too, though usually at a small scale, for instance if I need to implement a new feature I'd start with defining the API route, then creating stubs for the service or buisiness logic, and connect it to the data layer, and also create a stub for the its functions (e.g. simply returning an harcoded object instead of fetching something from DB). I find doing so reduces the cognitive charge and help me start to understand the new code base I'm working on. And It's much easier to sport mistakes at that time because the code is usually simple and small.
+- Pragmatic Programmers take it to the next lever and turn it into a development style, you are activly shooting the tracer bullets and adapting. Basically whenever you feel you don't know what to do, pick some important feature and code it up, end to end, it doesn't have to work correctly but it should just work end to end, somethign you can show to users and your team and get feedback.
+- Instead of solving the problem of not knowing where to look at in a dark by specifying the system to death, just use tracer bullets, shoot some shots, they won't always hit the target at first, but at least you're seeing something: it's always good to see something running end-to-end early.
+
+> Tip 20: Use Tracer Bullets to Find the Targets
+
+### 13. Prototypes and Post-it Notes
+
 
 ## Footnotes
 
