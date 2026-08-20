@@ -18,12 +18,14 @@ This is the JavaScript edition
     - [6. Your Knowledge Portfolio](#6-your-knowledge-portfolio)
     - [7. Communicate](#7-communicate)
   - [Chapter 2: A Pragmatic Approach](#chapter-2-a-pragmatic-approach)
-    - [The Essence of Good Design](#the-essence-of-good-design)
-    - [DRY - The Evils of Duplication](#dry---the-evils-of-duplication)
-    - [Orthogonality](#orthogonality)
+    - [8. The Essence of Good Design](#8-the-essence-of-good-design)
+    - [9. DRY - The Evils of Duplication](#9-dry---the-evils-of-duplication)
+    - [10. Orthogonality](#10-orthogonality)
     - [11. Reversibility](#11-reversibility)
     - [12. Tracer Bullets](#12-tracer-bullets)
     - [13. Prototypes and Post-it Notes](#13-prototypes-and-post-it-notes)
+    - [14. Domain Languages](#14-domain-languages)
+    - [15. Estimating](#15-estimating)
   - [Footnotes](#footnotes)
 
 ## Introduction
@@ -220,7 +222,7 @@ function calculateTotal(price: number, taxRate: number): number {
 
 ## Chapter 2: A Pragmatic Approach
 
-### The Essence of Good Design
+### 8. The Essence of Good Design
 
 - The word is filled with people eager to shared their software design wisdom. There so many acronyms, patterns, diagrams, architectures, and so on.
 - Everything pretty much boils down to a simple idea: ETC
@@ -339,7 +341,7 @@ You can imagine that each function will be in a separate module (i.e file) since
 
 🗨 I actually never realized how important software quality was until I went through my first internship, seeing a codebase of thousands of files. If you don't write good code you'll quickly exceed your cognitive load and it's you'll be changing so many files. It's not easy to realize this when you work on small projects.
 
-### DRY - The Evils of Duplication
+### 9. DRY - The Evils of Duplication
 
 - As programmers we care about _knowledge_, we document it in spec and implement it. Managing knowledge is part of our job.
 - knowledge is constantly changing. you talk to the client or maybe some regulation changes, now suddenly the business logic is outdated.
@@ -585,7 +587,7 @@ all you can do is to try to foster an environment where sharing stuff easier to 
 
 Just do your best.
 
-### Orthogonality
+### 10. Orthogonality
 
 - This is one of the topics that's often taught implicitely in other different appraoches and techniques. But it's very useful.
 - In math, two vectors like (0, 1) and (1, 0) are orthogonal, whith means they are _independent_.
@@ -722,7 +724,7 @@ BUT, I find it annoying because now whenever you update the PostgresRepository, 
 - we also needs such tracers in software development; basically we want to see if we're hitting or not, are we going in right direction?
 - You would do this by choosing some important feature
 - Since configuration and project setup is complicated these days, especially with the number of dependencies, The first useful tracer is usually just getting the project to work, end to end, all the layers are working fine and integrated.
-  - That's very helpful for the team too, having a structure to work with it much batter than staring at an empty code base. It improves everyone's productivity.  
+  - That's very helpful for the team too, having a structure to work with it much batter than staring at an empty code base. It improves everyone's productivity.
 - 🗨 Is the gun even firing, it doesn't matter if we hit the target or not, I just want to see it firing. I want to see the first tracer!
 - 🗨 I love doing this too, though usually at a small scale, for instance if I need to implement a new feature I'd start with defining the API route, then creating stubs for the service or buisiness logic, and connect it to the data layer, and also create a stub for the its functions (e.g. simply returning an harcoded object instead of fetching something from DB). I find doing so reduces the cognitive charge and help me start to understand the new code base I'm working on. And It's much easier to sport mistakes at that time because the code is usually simple and small.
 - Pragmatic Programmers take it to the next lever and turn it into a development style, you are activly shooting the tracer bullets and adapting. Basically whenever you feel you don't know what to do, pick some important feature and code it up, end to end, it doesn't have to work correctly but it should just work end to end, somethign you can show to users and your team and get feedback.
@@ -732,6 +734,216 @@ BUT, I find it annoying because now whenever you update the PostgresRepository, 
 
 ### 13. Prototypes and Post-it Notes
 
+- prototypes can target specific aspects of a project
+- in all fields, prototypes are great because they expose risk early at a reduced cost. After that, _you throw the prototype away_.
+- not all prototypes are code based, you have a lot of options, you could draw a UI on a whiteboard, on some painting program, or some tool (🗨 e.g. Figma), etc.
+- post it notes are good for prototyping dynamic things like application logic
+- 🗨❓ not sure why post-it notes exactly, and no idea how they can be use it in this context, why not just a pen and paper?
+- prototypes are great for things you aren't sure about and that carry risk.
+- you can prototype a new functionality in your system, architecture, UI, performance issues...
+
+> Prototype to learn
+
+- it's not about the code you wrote, it's about what you learned while prototyping.
+- you might want to use a high level scripting language like Ruby or Python (or JavaScript) for prototypes
+- 🗨 This has something to do with _dynamic typing_, they won't get into your while prototyping, as there is no type checker to complain!
+- 🗨 FYI there is no defintion for what constitute _scripting language_, but among friends it's basically a dynamic lanaguge that usually has tons of util functions, where it's easy to create short scripts that deal with files, etc. Python is known for this. It's _not_ about being interpereted or not, that's a very confusing and misleading idea.
+- 🗨 Some consider scripting language to equal "interpreted", as opposed to "compiled" languages like C# and Java. And while that's fine, you can define terms as you wish but it can be misleading.
+- Remember, prototypes will be thrown away later, it doesn't matter which language you use to create them.
+- To prototype architecture you write code, but you can also can simply use a whiteboard with some post-it notes or index cards
+- When you are building a prototype _make sure_ to make it so clear that the code is disposable and will not be used for further development. It's easy to get mislead by the apparent completeness of a prototype.
+- If there is a risk people will still misunderstand the purpous of the prototype, well you may be better off without it and use an approach like Tracer Bullets.
+
+### 14. Domain Languages
+
+> The limits of language are the limits of one's world - Ludwig Wittgenstein
+
+- 🗨 This fun topic to think about: how language can affect how understanding... remember 1984's Newspeak language which had deliberately a limited vocabulary to limit the citizen's thoughts? well that's an extreme version that linguists wouldn't probably agree with today, but I believe the idea that language can influence how we think does make sense.
+
+- Computer Languages influence how you think about a problem. Solving a problem with C++ will have different result than approaching it with Haskall.
+- The language of the problem domain can also be used!
+
+> Tip 22: Program Close to the Problem Domain
+
+- 🗨 Domain Specific Languages (DSL) are everywhere! I bet you already know many! Open any modern web development project and you'll see it full of such small languages.
+- 🗨 CSS is not a programming language, it's a language made for a specific task, styling a web page. That's why we can call it a domain-specific language.
+- 🗨 _domain-specific language_ (DSL) isn't a great term. I read in Crafting Interpreters that they used to call them little languages. I think _domain Languages_ is fine though.
+- 🗨 RegEx is a domain language too, it has a specific use: matching strings with patterns.
+- 🗨 A Dockerfile is a DSL.
+  #todo add example here
+- 🗨 Same for docker compose
+
+- 🗨 You just describe the steps, and it works
+- 🗨 Same for makefiles
+- 🗨 SVG is a DSL for drawing images
+
+```xml
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="50" r="40" fill="red" />
+</svg>
+```
+
+- 🗨 This is a language for linear programming called OPL:
+
+```
+maximize 50 * x + 30 * y;
+
+subject to {
+    2 * x + 1 * y <= 40;   // labor constraint
+    4 * x + 6 * y <= 120;  // material constraint
+}
+```
+
+- 🗨 Another neat example I saw was a [domain language for editing videos](https://github.com/missing-semester/videos/blob/master/src/msv/lectures/iap2026/lec1.py) that was used to create MIT's The Missing Semster course.
+- Ngnix (a web server) has a DSL for server configuration.
+
+```
+http {
+    server {
+        listen 8080;
+        root /var/www/html;
+    }
+}
+```
+
+- 🗨 Testing libraries like Jest and Vitest often come with pretty nice syntax that lets you focus on tests. It's a beautiful abstration. And I think it can be considered a DSL.
+
+```ts
+describe("sum function", () => {
+  it("should add two numbers correctly", () => {
+    expect(sum(2, 3)).toBe(5);
+  });
+
+  it("should handle negative numbers", () => {
+    expect(sum(-1, -1)).toBe(-2);
+  });
+});
+```
+
+Some languages take it to the next level, cucumber is testing library that lets you write tests in an even more readable format.
+
+```
+Feature: Sum function
+  As a user
+  I want to add two numbers
+  So that I get the correct result
+
+  Scenario: Add two positive numbers
+    Given I have numbers 2 and 3
+    When I add them together
+    Then the result should be 5
+
+  Scenario: Add two negative numbers
+    Given I have numbers -1 and -1
+    When I add them together
+    Then the result should be -2
+```
+
+- Yup, you can actually execute that test! (you add more config files of course)
+- Cucumber was initially made so that business users can read the tests, but that rarely happens.
+- one reason "gather requirements, design, code, ship" approach doesn't work because we rarely know what the requirements are! the business users will have a vague idea of what they want, they don't know nor care about the details.
+
+> That's our value: we intuit intent and convert it into code
+
+- That's why it's not a good idea to have them read such tests, give them some prototype or some running code and you'll get much better feedback.
+
+- There are two kinds of domain languages: Internal and External
+- Internal are language written in the host language, e.g. Jest tests, they extend the host language.
+- Ruby is known for being one of the best languages for internal DSL, look at how pretty and elegant this code is:
+
+```ruby
+describe "Calculator" do
+  it "adds two numbers" do
+    expect(2 + 3).to eq(5)
+  end
+  it "subtracts numbers" do
+    expect(5 - 3).to eq(2)
+  end
+end
+```
+
+- External DSLs are have their own language, their own synax, which gives them more freedom to create any fancy syntax. Hence they usually have their own _parser_ that turns that code into some data structure and then execute some functionality.
+- _parsing_ is a very useful term to know: the parser receives some string, it turns it into a data structure. that's it. that's a parser. it knows the syntax rules, and based on them it will parse the srting. The same way HTML file (a bunch of text on the disk) is turned into a DOM tree in memory that you can manipulate (and the browser would display).
+- This is true for external domain languages too, they are parsed by a program and that program does the magic, it abstracts all the details from you and lets you use the language of the problem. The nice thing about external language is that you can come up with any syntax you want, there is a lot of freedom.
+- You can write your own parser for a DSL, e.g. let's say you want to have a language for HTTP configurations, let's say you come up with this syntax, and let's call this language YACL (yet another config language!)
+
+```
+listen on port: 8080+ // if 8080 is taken try 8081, etc.
+dir: /html/project
+logging: off
+```
+
+- But good luck writing a parser, though there are many great tools that can help you (there are parser gernerators, in fact some let you define the syntax rules for your parser using a domain langauge, now isn't that cool!), but it's still not really that easy, and it could be time consuming.
+- The parser would _open_ that file we wrote, then with some magic (take a compilers class or read Crafting Interpreters if you want to know how) it outputs a data structure, e.g. a Javascript object:
+
+```js
+{
+  port: 8080,
+  incrementPortIfTaken: true,
+  dir: "/html/project",
+  logging: false
+}
+```
+
+Instead of writing your own praser you could instead use external languages like XML, JSON, or YML to create your own domain languages. It's not as pretty and expressive but it's good enough. well in our case, you can simply put the exact same object in a JSON file, or even keep it as JavaScript, that's how so many JS libraries handle configurations!
+
+```json
+{
+  "port": 8080,
+  "incrementPortIfTaken": true,
+  "dir": "/html/project",
+  "logging": false
+}
+```
+
+- You could also use XML thought it's often not recommended for configuration, because it's so ugly. Though it's pretty good as a markup language.
+
+- Again, you don't have to write your own parser! you can also use languages like XML and YML, which already have battle-tested parsers ready to use. The parser would parse the file and give you a data structure then you can do whatever you want with it!
+- Let's say you want a DSL to run a small robot you have, you can define a language for it in XML:
+
+```xml
+<steps unit="cm">
+  <moveUp dist="20">
+  <moveLeft dist="50">
+  <turnOff/>
+</steps>
+```
+
+- You can then write code to parse this file and you write code to move the robot based on the tags.
+
+- All of this helped me internalize the idea that everything is pretty much a bunch of files, software is just a bunch files!
+
+#TODO: do the problem set in this section
+
+### 15. Estimating
+
+- 75TB of data, over 1Gbps network?
+  - 75\*2^40\*8 / 2^30
+  - 🗨 btw I found these numbers useful to remember:
+    - 10^3 (thousand - kilo) is approximately 2^10
+    - 10^6 (million - mega) is approximately 2^20
+    - 10^9 (billion - giga) is approximately 2^30
+    - 2^10 bit = 1Kb (1024 bit) [Kb isn't same as KB]
+    - 2^20 bit = 1Mb
+    - 2^30 bit = 1Gb
+    - it's often recommended to memorize the powers of 2 (up to 2^15)
+    - How much is 2^25 bits? well around 32Mb
+
+- how much storage you need for a million names and addresses
+- how long does it take to compress 100MB of text?
+- You should learn how to estimate to have a sense of the magnitude of things
+
+- at one level the answers here don't really matter.
+- but learning how to estimate as developer, to the point where you have intuitive feeling for the magnitude of things, can you have deeper understanding and the feasability of options.
+
+> Tip 23: Estimate to Avoid Surprises
+
+- Context matters, the accurace of estimates differs based on the situation.
+- People will understand your estimation differently based on the terms you use, if you say the project will take 130 working days people will expect something close to that. And if you say it would take 6 months --even though it's the same period -- people will have different expectations.
+
+- Estimations are based on the models we have for problems. You don't have to immediately start buildinga model; The best first step for good estimates is simply to ask others who have been in a similar sitation or solved a similar problem.
+
+#TODO: re-read this section - still didn't fully get it.
 
 ## Footnotes
 
