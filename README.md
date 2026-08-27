@@ -4,9 +4,15 @@ Book by David Thomas and Andrew Hunt
 
 This is the JavaScript edition
 
+## Key
+
+❓: unresolved questions
+🗨: my own thoughts
+
 ## Table of Content
 
 - [Pragmatic Programmer](#pragmatic-programmer)
+  - [Key](#key)
   - [Table of Content](#table-of-content)
   - [Introduction](#introduction)
   - [Chapter 1: A Pragmatic Philosophy](#chapter-1-a-pragmatic-philosophy)
@@ -26,6 +32,51 @@ This is the JavaScript edition
     - [13. Prototypes and Post-it Notes](#13-prototypes-and-post-it-notes)
     - [14. Domain Languages](#14-domain-languages)
     - [15. Estimating](#15-estimating)
+  - [Chapter 3: The Basic Tools](#chapter-3-the-basic-tools)
+    - [16. The Power of Plain Text](#16-the-power-of-plain-text)
+    - [17. Shell Games](#17-shell-games)
+    - [18. Power Editing](#18-power-editing)
+    - [19. Version Control](#19-version-control)
+    - [20. Debugging](#20-debugging)
+    - [21. Text Manipulation](#21-text-manipulation)
+    - [22. Engineering Daybooks](#22-engineering-daybooks)
+  - [Chapter 4: Pragmatic Paranoia](#chapter-4-pragmatic-paranoia)
+    - [23. Design by Contract](#23-design-by-contract)
+    - [24. Dead Programs Tell No Lies](#24-dead-programs-tell-no-lies)
+    - [25. Assertive Programming](#25-assertive-programming)
+    - [26. How to Balance Resources](#26-how-to-balance-resources)
+    - [27. Don't Outrun Your Headlights](#27-dont-outrun-your-headlights)
+  - [Chapter 5: Bend, or Break](#chapter-5-bend-or-break)
+    - [28. Decoupling](#28-decoupling)
+    - [29. Juggling the Real World](#29-juggling-the-real-world)
+    - [30. Transforming Programming](#30-transforming-programming)
+    - [31. Inheritance Tax](#31-inheritance-tax)
+    - [32. Configuration](#32-configuration)
+  - [Chapter 6: Concurrency](#chapter-6-concurrency)
+    - [33. Breaking Temporal Coupling](#33-breaking-temporal-coupling)
+    - [34. Shared State Is Incorrect State](#34-shared-state-is-incorrect-state)
+    - [35. Actors and Process](#35-actors-and-process)
+    - [36. Blackboards](#36-blackboards)
+    - [Chapter 7. While You Are Coding](#chapter-7-while-you-are-coding)
+    - [37. Listen to Your Lizard Brain](#37-listen-to-your-lizard-brain)
+    - [38. Programming by Coincidence](#38-programming-by-coincidence)
+    - [39. Algorithm Speed](#39-algorithm-speed)
+    - [40. Refactoring](#40-refactoring)
+    - [41. Test to Code](#41-test-to-code)
+    - [42. Property-Based Testing](#42-property-based-testing)
+    - [43. Stay Safe Out There](#43-stay-safe-out-there)
+    - [44. Naming Things](#44-naming-things)
+  - [Chapter 8. Before the Project](#chapter-8-before-the-project)
+    - [45. The Requirements Pit](#45-the-requirements-pit)
+    - [46. Solving Impossible Puzzle](#46-solving-impossible-puzzle)
+    - [47. Working Together](#47-working-together)
+    - [48. The Essence of Agility](#48-the-essence-of-agility)
+  - [Chapter 9: Pragmatic Projects](#chapter-9-pragmatic-projects)
+    - [49. Pragmatic Teams](#49-pragmatic-teams)
+    - [50. Coconuts Don't Cut It](#50-coconuts-dont-cut-it)
+    - [51. Pragmatic Started Kit](#51-pragmatic-started-kit)
+    - [52. Delight Your Users](#52-delight-your-users)
+    - [53. Pride and Prejudice](#53-pride-and-prejudice)
   - [Footnotes](#footnotes)
 
 ## Introduction
@@ -612,18 +663,9 @@ Just do your best.
 - 🗨 There is a nice package that let's you define the valid dependencies in your project called `dependency-cruiser`. You can use a `pre-commit` hook (basically a bash script) and whenever you commit it will verify all your imports and check if they don't violoate the architecture you created. e.g. if the route `/api/products` imports `ProductsRpository` and calls `productsRpository.getAll()` that would error out. You can only call `productsController.listProducts()`
 - How to test if your design is orthogonal: ask yourself "If I drastically change the requirements for some functionality, how many modules will be affected"? The answer should _one_ (of course you realistically more than one module will be affected, but in you look carefully you should find that the changes truly related to the functionality happened in one module)
 
-- Unit of Work/Transaction Pattern
-
-OK I didn't know about this!!!!!!
-About transactional operations!
-EJB is a neat example about this.
-In fact I studied in college in a class about JEE
-It uses the "decorator pattern", i.e. using annotations to add functionality.
-it's super neat. it's declarative.
-
-avoid global data as much as you can.
-putting global variables in a JS module might create unncesariy linkage.
-In Java people might use singletons to create global patterns, it might create unncesariy linkage
+- avoid global data as much as you can.
+  - 🗨 putting global variables in a JS module might create un ncesariy linkage.
+- e.g. in Java people might use singletons to create global patterns, it might create unncesariy linkage
 
 sections to re-read:
 
@@ -945,6 +987,282 @@ Instead of writing your own praser you could instead use external languages like
 
 #TODO: re-read this section - still didn't fully get it.
 
+## Chapter 3: The Basic Tools
+
+### 16. The Power of Plain Text
+
+> As programmers our base material isn't wood or iron, it's knowledge
+
+- plain text is the best way to store knowledge persistently
+- In binary formats (as opposed to human-readable formats) the context is separate from the data, you can't understand the data without the program or software that opens the file and parses it.
+- plain text is simply any file containing text; ASCII/UTF-8 characters, etc.
+  - basically any file you can open it with notepad and understand its content.
+
+> Tip 25: Keep Knowledge in Plain Text
+
+- For instance, writing documents in MD files is much better than writing in some word precessor like microsoft Word[^word]
+- plain text doesn't mean it's unstructured: HTML, XML, Markrdown and JSON are all plain text
+  - 🗨 sometimes called "semi-structured" files
+- There are three reasons why plain text is awesome
+  - 1. Insurance against obsolescence: plain text survives. For binary files you would need to know everything about the file to parse it.
+  - 2. Leverage existing tools: you can do anything with plain text
+    - you can `grep` a text file
+    - you can version control it easily
+    - you can `diff` it
+
+- plain text is really awesome because once parsed, you can do whatever you want with it, that's why static site generators do for instance, they allow you to write MD files then they get converted to HTML.
+- and the nice thing about it is that you can customize how to display it, for instance if you write a document using MD you can display it differently (e.g. I use Obsidian to write MD files and I can easily change the theme and install new ones)
+- 🗨 It's worth understanding what is plain text, I've noticed some people don't quite understand how text is represented
+  - I recommend this article #todo: add it here later
+- Binary files have their advantages too, they are often more efficient
+  - if you write "27500000" in JSON, that's 8 bytes of data, you can store the same number (and larger numbers) in a binary foramt usnig 4 bytes. That's why in databases they don't store information as plain text (e.g. Mongo uses BSON format) and binary formats are efficient for other reasons.
+- 3. It's easier to test
+
+> If you use plain text to create synthetic data to drive system tests, then it is a simple matter to add, update, or modify the test data _without having to create any special tools to do so_.
+> ❓ I don't quite understand what this means.
+> in integration tests I often find myself needing to re-set the database state to a specific state, maybe I can create multiple JSON files representing different states of the DB and maybe create some abstraction that would take a file and set the DB to it.
+> I once did a similar thing but it was for an XML database called XState... But I'm not sure this is what the book is talking about.
+
+> Even in the future of blockchain-based intelligent agents that travel the wild and dangerous internet autonomously, negotiating data interchange among themselves, the ubiquitous text file will still be there.
+
+### 17. Shell Games
+
+- 🗨 I was raised on GUI so personally it took me a while to understand how powerful the shell is.
+  > A benefit of GUIs is WYSIWYG—what you see is what you get. The disadvantage is WYSIAYG— what you see is all you get
+
+> Tip 26: Use the Power of Command Shell
+
+- 🗨 MIT's The Missing Semester is a great course to get into the shell. I learned so many useful commands from it.
+
+- 🗨 if you feel you don't like the shell, I higly recommand that you try the `zoxide` command and `tmux`, these two made me fall in love with the shell.
+
+### 18. Power Editing
+
+> Tip: Achieve Editor Fluency
+
+- You need to reach the point where you edit the files effortlessly, you don't even need to think about it.
+- 🗨 I think you should simply put some time to learn your editor well; I once heard Lex Fridman explaining how editors like VS code don't are so easy to start with that you don't have to learn them. You can spend years using VS Code without learning how to use it effectively. while if you can't even use Vim without learning it well. So we should learn our editors.
+- Here is a nice video from Syntax about nice [vscode tips](https://youtu.be/c0HO_-NDJCk)
+- One ther thing I frequently use when editing.
+  - grow/shrink selection `Alt + Shift + RightArrow/LeftArrow`: This one is great, in JS you often want to select all lines between two parenthses or brackets, this command allows you to do that easily.
+
+- You don't need to know all the features and deatils. The recipe for becoming better at editing is fairly simple: just look at yourself while editing, if you notice you're repeating something over and over then you need to think "there must be a better way".
+- exetend the abilities of your editor. There are many good extentions for ecosystem you're working on.
+- learn how to use your editor's extension language to automate reptitive things
+  - 🗨 learn how to create snippets in VS Code
+  - if needed you could even build full extensions and share them with others.
+
+### 19. Version Control
+
+> 28: Always Use Version Control
+
+- use version control for _everything_, it doesn't have to be code.
+- learn how to recover from disasters, how to fix mistakes. Many people use git and know that git can help them in disasters but actually never found the time to learn it well. You should learn it.
+  - 🗨 I really love the Head First Git book, it teaches well how to fix mistakes with git.
+
+- imagine you lost your computer, how fast would it take you to set up a new computer - with all your aliases, settings, apps? most configs are stored as plain text, so you can use git to manage this.
+  - 🗨 many people use symbolic links and create a dotfile repository which contains all their configurations like `bashrc`, `.tmux.conf` and so on. you can also create scripts that would copy configuration files to their correct place, and much more.
+- find another computer you no longer use and test how fast can set it up to see if your recovery system works.
+
+> Version control branches and test organization have something in common: they both have thousands of people out there telling how you should do it. And this advice is largely meaningless.
+
+- 🗨 one of the things that often surprised me when I started out in web development. There are so many approaches for problems and in many cases there is no consensus.
+
+> IF 1000 SOLUTIONS EXIST, NO GREAT ONE DOES - Operating Systems: Three Easy Pieces
+
+### 20. Debugging
+
+> Tip 29: Fix the Problem, Not the Blame
+
+> It doesn't matter if it's your fault or someone else's. it's still your problem.
+
+- You might feel stressed, having a deadlines and preassures. You should relax, and focus on solving the problem.
+
+> Tip 30: Don't Panic
+
+- Don't waste time thinking that "it's impossible" for this error to happen. because it can.
+- Don't just fix what appears to be the issue, you just modify the code, run it, get some other errors, fix them, run it, the code works and the test pass. That's it. You should try to find the root of the problem, not just one appearance of it.
+- after understanding the bug, start by re-producing it. We want a bug that can be reproduced with a single command. So write some test that would reproduce the bug.
+
+> Tip 31: Failing Test Before Fixing Code
+
+- Just the act of writing the test itself might help you think more deeply about the problem.
+- If it's a crash, just...
+
+> Tip 32: Read the Damn Error Message
+
+- if it's not a crash, if it's wrong output, use a debugger and trigger the error with your failing test.
+  - 🗨 simply put a 🔴 breakpoint on the failing test and run it in debug mode.
+  - learn how to use an interactive debugger if you never used it.
+    - learn how to debug react code
+    - learn how to debug node apps
+- Make sure you know how to move up and down the call stack
+- Keep a pen and paper and take notes, for example sometimes you might find a clue and chase it down but it turns out not the issue, if you didn't take some notes where you were before it takes more time to get back where you were before.
+- Use the _binary search_ technique (aka binary chop) technique while when faced with a huge stacktrace and you want to know which function cause the error.
+  - #todo: example
+- same goes with datasets, if you have a test dataset that made your test fail, divide the data see which part made it fail. and so on.
+- If you your team created a bug at some point but you aren't sure when. you can create a quick test that triggers the bug then choose a release in the middle between the oldest known working version and the neweset release.
+  - 🗨 basically, learn how to use `git bisect`
+  - you have a project that has these commits: `... - (✓) - (?) - (?) - (?) - (x)`
+  - suddenly you realize there is a bug in the latest commit... but you don't know when the bug was introduced, it was added by someone at some point and we didn't realize it...
+  - but you know for sure that some release had no such bug, let's say in the first commit
+  - no imagine there are hundreds of commits between them! you can't just keep checking them one by one! and so we use the binary search technique (git automates it using `git bisect`)
+  - 🗨 don't commit the test you just created, so that you can run the test each time. remember, git will keep untracked files when you switch HEAD to point to a different commit.
+  - 🗨 git takes it to another level by letting you running the test automatically and deciding based on the test result. while you drink your cup of tea or coffee.
+  - 🗨 this also work for UI bugs, at each time you switch release, you can run the project again and manually test with the browser if it works as expected.
+- tracing statements (🗨 i.e. printf debugging) is very useful sometimes, especially when time itself is a factor that can help you understand the problem. that is, when you need to watch the state of the application change over time. This is especially true in event-based systems, concurrent processes and real-time systems.
+  - ❓ "event-based systems": I got to learn something about event-driven architectures, I know the idea of events (often used in game development) and the idea of events and callbacks in web development which is similar. And I once learn a bit about IoT and how sensors register events in a broker. But I never implemented such architecture myself. Seems like an cool topic.
+- Rubber ducking (aka Rubber Duck Debugging)
+  - 🗨 talk about a grudge against the language
+  - explain the problem to another person, you'll be surprised how helpful it is to put your understanding into words. if you don't find a problem you explain it to a rubber duck, or a teddy bear, or whatever you find in front of you!
+  - 🗨 I got to say, moments like this make me feel glad I got myself into this weird profession of programming.
+
+- When something goes wrong, first always assume the problem is in your code, and most likely it is. even though there is a small chance it's due to the OS update, or the DB is broken, or mabye the JS package got it wrong. but that's often not the case. So always start by doubting you code. The OS probably is not broken. you code is probably is.
+
+> Tip 33: "select" Isn't Broken[^broken-select]
+
+- Some bugs will surprise you, "it's impossible" you'd think. but alas, it happened.
+- Don't assume a piece of code will NEVER be a source of bugs, of course it can.
+
+> Don't Assume It - Prove It
+
+- when you find a bug don't just fix it:
+  - ask yourself why didn't you catch it earlier? maybe you need to improve the tests? so that they can catch such bugs earlier.
+  - see if any other places in code are susceptible to similar issues
+
+### 21. Text Manipulation
+
+- This is serious: programmers manipulate text the same way wood workers manipulate wood.
+- You go to learn some text manipuation languages, they are extremely useful. But like any great tools they take time to master.
+- you can use built-in shell tools like `sed` and `awk`. you can also use Python or Ruby if you prefer a more structured language.
+
+> Tip 35: Learn a Text Manipulation Language
+
+- 🗨 The `awk` is one of my favorite commands, it's super useful in so many different ways.
+  Let's say I have this folder structure
+
+```
+- Country 01
+  - Bank 01
+    - 2010.pdf
+    - 2011.pdf
+    ..
+  - Bank 02
+    ...
+- Country 02
+  ...
+```
+
+I wanted to check if all files are named correctly, I wanted to see if there are files names that aren't `[year].pdf`
+Pseudocode:
+
+```shell
+find . -type f -name "*txt"
+| awk -F '/' '$NF !~ /[0-9]{4}\.txt/ {print}'
+```
+
+you feel you can do whatever you want with the text, as long as the text has some structure, you can mold it the way you want. The feeling it gives you is really hard to describe.
+
+challenge #todo: write a script to turn a directory of YML files to JSON files.
+challenge: you decided to move from camelCase convention to snake_case for variables, write a script that goes over that scans your codebase for any camelCase variables and report them to you.
+challenge: add the ability to change those variable names in one or more pages. (make a backup of your files, something might go wrong!)
+
+### 22. Engineering Daybooks
+
+- A journal where you record what you did and learned. where you sketch ideas, plans, etc.
+- you can use it to take notes in meetings, to note down variable data when debugging, doodling.
+- it has many benefits; at some point you'll have a bunch of daybooks and you could go over them and see the projects you were working on them and the problems you faced.
+- 🗨 I had a daybook for around a year now, I have been using it for some stuff, mostly for insights I learned from courses. Database tricks I learned, shell commands. DNS records, quotes I like... It's really fun and I like doodling on it.
+
+## Chapter 4: Pragmatic Paranoia
+
+> Tip 36: You Can't Write Perfect Software
+
+- we deal with others; We deal with a lot code that might not live up to our standards; so learn that it's important to program defensively, we validate everything, we never trust the data we get, we use assertions to detect bad data, we doubt and check
+- pragmatic programmers take it to the next level: _they don't trust themselves, either_ because the know no one writes perfect software.
+- 🗨 reminds me of Dijstra's wise words:
+
+> We shall do a much better programming job, provided we approach the task with a full appreciation of its tremendous difficulty, provided that we respect the intrinsic limitations of the human mind and approach the task as very humble programmers
+
+- 🗨 I think being honest about our human limitations and accept our own weaknesses is a virtue and it matters, I really like thinking. But what matters more is what you do with it. How you deal with those limitation and trying to do the right thing is the goal.
+
+### 23. Design by Contract
+
+> Dealing with computers is hard, dealing with people is even harder.
+
+- Human beings figured that contracts can be a useful thing when dealing with others in some circumstances. you define the rights and responsibilities of each part, etc.
+- We can apply this to software development (how modules interact). It is cammed **Design By Contract** (DBC).
+
+### 24. Dead Programs Tell No Lies
+
+### 25. Assertive Programming
+
+### 26. How to Balance Resources
+
+### 27. Don't Outrun Your Headlights
+
+## Chapter 5: Bend, or Break
+
+### 28. Decoupling
+
+### 29. Juggling the Real World
+
+### 30. Transforming Programming
+
+### 31. Inheritance Tax
+
+### 32. Configuration
+
+## Chapter 6: Concurrency
+
+### 33. Breaking Temporal Coupling
+
+### 34. Shared State Is Incorrect State
+
+### 35. Actors and Process
+
+### 36. Blackboards
+
+### Chapter 7. While You Are Coding
+
+### 37. Listen to Your Lizard Brain
+
+### 38. Programming by Coincidence
+
+### 39. Algorithm Speed
+
+### 40. Refactoring
+
+### 41. Test to Code
+
+### 42. Property-Based Testing
+
+### 43. Stay Safe Out There
+
+### 44. Naming Things
+
+## Chapter 8. Before the Project
+
+### 45. The Requirements Pit
+
+### 46. Solving Impossible Puzzle
+
+### 47. Working Together
+
+### 48. The Essence of Agility
+
+## Chapter 9: Pragmatic Projects
+
+### 49. Pragmatic Teams
+
+### 50. Coconuts Don't Cut It
+
+### 51. Pragmatic Started Kit
+
+### 52. Delight Your Users
+
+### 53. Pride and Prejudice
+
 ## Footnotes
 
 [^think]: It's worth noting that this is not at odds with trying things out when you're trying to understand the problem; sometimes it's a good idea to start getting your hands dirty and start with some code, or come up with examples when you're trying to solve a math problem. The problem is when you start to get into autopilot mode and enter what I like to call the WHEEL loop (write, hope, execute, errors, loop)
@@ -960,3 +1278,7 @@ Instead of writing your own praser you could instead use external languages like
 [^component]: software components. it's basically like a module in JS, it's a very general term. anything with some implementation and an exposed API.
 
 [^GUI]: many pronounce it as "gooey"
+
+[^word]: btw Word now stores files as XML under the hood, but it's not a human readable format, its' just because Microsoft was required -legally- to allow interoperability with other word processing tools.
+
+[^broken-select]: referring to a short story in the book when one programmer mistakenly believed that the `select` system is broken and refused any other explanation.
