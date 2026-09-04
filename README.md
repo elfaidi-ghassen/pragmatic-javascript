@@ -1191,11 +1191,122 @@ challenge: add the ability to change those variable names in one or more pages. 
 > Dealing with computers is hard, dealing with people is even harder.
 
 - Human beings figured that contracts can be a useful thing when dealing with others in some circumstances. you define the rights and responsibilities of each part, etc.
-- We can apply this to software development (how modules interact). It is cammed **Design By Contract** (DBC).
+- We can apply this to software development (how modules interact). It is called **Design By Contract** (DBC).
+
+focus on the rights and responsibilities of modules to ensure _correctness_
+correctness = doing no more or less than what you claim to do
+the heart of DBC: verifying and documenting that claim.
+
+every function does something. and it expects some state of the world.
+
+- preconditions: what must be true for the function to be called.
+  it's the caller's responsibility to pass good data
+
+- postconditions: what the function is guaranteed to do.
+- class invariants: from the persepective of the caller, what will always remain true.
+
+The contract:
+
+> If all the routine's preconditions are met by the caller, the routine shall guarantee that all postconditions and invariants will be true when it completes.
+
+- if either the caller or the function fail to meet this contract, something that you agreed to should happen, e.g. an exception is raised or the program terminates.
+- failure to meet the agreement IS A BUG. it's something that should never happen!
+  - that's why pre-conditions must never be used for something like input validation
+
+> Tip 37: Design with contract
+
+- You should be lazy: be strict in what you'll accept from the start and promise very little.
+  - 🗨 "if you don't meet the terms of the agreement, well, I won't do anything, why do you expect me to bend myself forward and understand the heck you want"
+  - this helps catching bugs early and write better software. You avoid _programming by coincidence_.
+    > _DBC forces you to think_.
+
+- It works in any programming language
+  ❓ But wait... postconditions don't make sense in some cases, e.g. if you update the database, you need to rollback. well if you the function throws an error it should rollback.
+- Class invariants is not just about OOP, it's just a term. The idea is about state and how you should never be in an invalid state after an operation. Other languages have state too, e.g. in FP you would pass the state to functions.
+- it's actually ok to be in an invalid state while the function code is running, but at the end the invariat must hold true.
+
+- But don't we write tests anyway?
+  - DBC and testing are both useful, but DBC has its own unique strengths
+  - DBC doesn't require any setup or mocking, testing might miss cases while DBC claims are always there, at runtime, even in production and maintenance phases.
+  - Testing is good of course, and approaches like Test Driven Development is a great technique but it might make you focus too much on the "happy path" and miss some cases.
+
+- Some languages would help you automatically check your contract (e.g. Eiffel, Clojure);
+- But just thinking about the input and what the function promises to do, and more importantly, what it doesn't promise to do, _before_ writing a single line of the function: that alone is a huge step towards better software.
+- Even without automatic checking if you just _think_ you did well. You can put those contracts in comments or in a unit test.
+- It would also be great if you can statically check those contracts, but you can emulate this partially by runtime checks: assertions.
+  - DBC style checks run even even before the function body is executed. assertions are in the function body.
+  - Assertions sometimes can be turned off, which is a problem.
+- It's not as powerful as languages that fully support DBC, but it's better than nothing.
+- ❓🗨 Why don't we just throw an exception? assertions themselves throw an exception...
+
+```ts
+const sqrt = (x: number) => {
+  if (x < 0) {
+    throw new InvalidInput('sqrt expects a nonnegative number')
+  }
+  ...
+}
+```
+
+But using asserts seems like a better idea.
+
+```typescript
+const sqrt = (x: number) => {
+  assert(x >= 0)
+  ...
+}
+```
+
+- Both will throw an exception, but it seems asserts communicate the contract, it has a more semantic meaning than simple error throwing, it also looks like DBC clauses in Eiffel and Clojure. So it seems like the better way to emulate DBC.
+- Again, if the pre-conditions fails IT IS A BUG. It's something that should never have happened. It's the calling side's problem for not meeting the agreement's terms. The function is not responsible for the failure.
+
+- Semantic Invariants: kind of "philosophical contract"
+- Use it for requirements that are essential to the very meaning of something, not "fixed" requirements, even those might change. But some requirements might qualify to be "semantic requirements".
+  - When you find such invariants make sure to document it well and maybe even write it on a whiteboard so everyone sees it.
+
+- ❓ The book has a short section about autonomous agents and dynamic contracts... it didn't fully understand it.
+
+- Why isn't DBC more common? Because it forces us to think about problems we'd rather ignore for now. Because it forces us to _think_.
+
+> Clearly, this is a dangerous tool
 
 ### 24. Dead Programs Tell No Lies
 
+all switch cases should have a default case / let us know when the impossible happens
+falling into "it can't happen" mentality
+
+> Tip 38: Crash Early
+
+> Defensive Programming is a waste of time, let it crash - Joe Armstrong, inventor of Earlang
+
+- A Dead Progeam does much less damage. Continuing to run in an invalid state might create really big problems.
+- Sometimes it might not be appropriate to terminate; e.g. in a web server; you might need to add some logging and clear up the used resources, etc. what matters is that you don't continue to run in a bad state.
+
 ### 25. Assertive Programming
+
+> Tip 39: Use Assertions to Prevent the Impossible
+
+- whenever you feel "but this would never happen" add code to check it.
+- you should add a custom message
+
+```ts
+const assert = require('node:assert');
+...
+assert(currentStatus === 'pending', 'The current appointment state is not pending');
+```
+
+- Do not use assertions in place of real error handling
+- The following is a BAD IDEA:
+
+```ts
+const answer = readInput();
+assert(answer === "Y" || answer === "N");
+```
+
+- Asserts are for the things that SHOULD NEVER HAPPEN.
+- You can catch the assertion exception and clean up resources.
+- _Leave asserts on in production._
+- You can display a nice UI to the end user when an assert fail and report the data, this can help you build robust software and find the subtle bugs that are hard to find and reproduce.
 
 ### 26. How to Balance Resources
 
@@ -1282,3 +1393,7 @@ challenge: add the ability to change those variable names in one or more pages. 
 [^word]: btw Word now stores files as XML under the hood, but it's not a human readable format, its' just because Microsoft was required -legally- to allow interoperability with other word processing tools.
 
 [^broken-select]: referring to a short story in the book when one programmer mistakenly believed that the `select` system is broken and refused any other explanation.
+
+```
+
+```
