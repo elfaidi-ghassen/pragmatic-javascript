@@ -1310,13 +1310,274 @@ assert(answer === "Y" || answer === "N");
 
 ### 26. How to Balance Resources
 
+- Resources: memory, transactions, threads, network connections, files, timers, etc.
+- most developers don't have a consistent plan to deal with resources.
+  > Tip 40: Finish What you Start
+- The function that allocates the resource should be responsible for deallocating it.
+- In many modern languages you can scope the resource to a block. The resource will be freed automatically, you don't need to remember to release the resource.
+
+```python
+with open('.log') as file:
+  ...
+```
+
+> Tip 41: Act Locally
+
+- Sometimes a function would need more than one resource
+  - Deallocate resources in the opposite order in which you allocate them.
+  - When allocating resources in different places in the code always allocate them in the same order.
+    #TODO examples
+- It might be useful to wrap resources into classes with deconstructors, that way whenever the object goes out of scope and the garbage collector reclaims it, the deconstructor would run and clean up.
+- This is especially good in language where exceptions could interrupt the resource deallocation:
+
+```
+def test():
+  f = open("file")
+  process(file) // throws an error
+  f.close() // won't run
+```
+
+the solution depends on the language
+
+- Variable scope (e.g. stack variables in C++ and Rust)
+- Use a `finally` close in a try...catch block.
+- Be careful, there is a common anti-pattern:
+
+```js
+try {
+  let file = await fs.open(filePath, "r");
+  process(file);
+} finally {
+  file.close();
+}
+```
+
+Now wha happens if the resource allocation itself fails (e.g. file not found)? closing a non opened resource will cause an error!
+
+```
+    file.close()
+         ^
+TypeError: Cannot read properties of undefined (reading 'close')
+```
+
+- The correct way of doing this is by allocating the resource outside the try-catch block.
+
+```js
+let file = await fs.open(filePath, "r");
+try {
+  process(file);
+} finally {
+  file.close();
+}
+```
+
+#TODO: review section "When You Can't Balance Resources"
+
+- Mistakes can happen, hence you need ways to monitor the resources. One way is creating wrapper for each kind of resource and using it to keep track of allocations and deallocations
+
 ### 27. Don't Outrun Your Headlights
+
+- stopping distance is how long it takes the car to stop from when you first see the danger
+- 80km/h -> around 65 meters to stop. more than that when it's raining.
+- outrunning your headlights when you're driving at night means you headlights are basically useless. (if you're using low-beam headlights which illumniate around 40 meters)
+- It means even if you see the danger (at around 40m distance) you don't have enough distance to stop. Hence if you want to keep using low-beam headlights and stay safe, you might not outrun your headlights. If you keep you speed low, e.g. around 40km/h you'll have a stopping distance of around 20m.
+- In software development, our "headlights" are similarly limited, we can't see much into the future.
+
+> Tip 42: Take Small Steps - Always
+
+- Take small steps and see the feedback, never take steps that are "too big"
+- feedback is what helps you avoid making big steps, if you're not seeing any feedback then you're taking a step that's "too large".
+- 🗨 I think tracebullet development is part of it, you make sure it works end to end before continuing. If you're writing too much code before running your project, you're probably taking too large a step.
+- When you have to estimate completion time months into the future or planning the design for future maintentance or predicting user needs. You're slowly falling into _fortune telling_.
+- BUT WAIT! aren't we supposed to write code that's maintainable in the future?!
+- well its true, but only to some extent. The more you predict the more risk you take in case you were wrong.
+- Instead of wasting time predicting, the best you could do is to _design you code to be replacable_.
+
+> Around the time the first edition of The Pragmatic Programmer, debate rages in the computer magazines and online forums over the burning question "Who would winthe desktop GUI wars, Motif or OpenLook"
+
+> Tip 43: Avoid Fortune Telling
+
+- You probably never heard of these libraries. It was the wrong question.
+- This applies to web development, every day or so a new library would come out. and people will keep fighting over which framework or library is the best. It's whe wrong question.
 
 ## Chapter 5: Bend, or Break
 
+- This chapter shall explain how to actually write flexible reversible code.
+
 ### 28. Decoupling
 
+> Tip 44: Decoupled is Easier to Change
+
+- Coupling can happen whenever two pieces of code share something.
+- There three examples you should keep in mind.
+
+1- **Train Wrecks**
+
+- Avoid chaining method calls.
+- You should not make decisions based on the internal state of an object and then update that object.
+
+> Tip 45: Tell, Don't Ask
+
+```java
+public void applyDiscount(customer, order_id, discount) {
+  totals = customer
+            .orders
+            .find(order_id)
+            .getTotals()
+  totals.grandTotal = totals.grandTotal - discount
+  totals.discount = discount
+}
+```
+
+- The issue here is that the "cars of the train" are coupled together, for this to work, so many things must never change - yet surely there is a good chance they will change.
+- You can think of it in terms of responsibilities, the totals object should be the one responsible for managing the totals.
+
+```java
+public void applyDiscount(customer, order_id, discount) {
+  totals = customer
+            .findOrder(order_id)
+            .getTotals()
+            .applyDiscount(discount)
+}
+```
+
+- we can ask again, is there really a need for the outside world to know that we have a separate totals object? we can abstract it away!
+
+```java
+public void applyDiscount(customer, order_id, discount) {
+  totals = customer
+            .findOrder(order_id)
+            .applyDiscount(discount)
+}
+```
+
+🗨 Here are some other examples I stumbled across
+🗨 I'll try to improve the examples and find better ones as I keep programming
+
+```ts
+const permissions = await PermissionsRepo.findByMemberId(member.id);
+if (!permissions || permissions.teamId != project.teamId) {
+  throw new UnauthorizedError("you don't have access");
+}
+if (permissions.role.name !== "manager") {
+  throw new UnauthorizedError("you do not have permissions to update");
+}
+```
+
+a better version might be:
+
+```ts
+const permissions = await PermissionsRepo.findByMemberId(member.id);
+if (!permissions.sameTeam(project.teamId)) {
+  throw new UnauthorizedError("you don't have access");
+}
+if (!permissions.isTeamManager(project.teamId)) {
+  throw new UnauthorizedError("you do not have permissions to update");
+}
+```
+
+here is another example:
+
+```ts
+let slots = await AppointmentSlots.findByUserId(user.id);
+if (slots.getAll().length() < MIN_SLOTS_SIZE) {
+  throw new ValidationError("Too few appointment slots");
+}
+```
+
+- let's say now business rules change and now you want to check maximum length; where do you add that check? how do you enforce it? even if you update it here now you must make sure all other places that use this check are updated too.
+- You can think of this in terms of responsiblities, who is responsible for verifying this busienss rule.
+- Perhaps we create a function like this:
+
+```ts
+slots.hasEnoughSlots();
+```
+
+**The Law of Demeter (LoD)**
+
+- It's a bunch of guidelines related to coupling written in the 80s
+  - so it's not really a law, it's more like the _Pretty Good Idea of Demeter_
+- It's pretty good but authors now disagree about parts of it like the use of global variables.
+- More importantly, It's actually quite hard to use in practice, it's like having a check-list you need to go through every time you write a meothod.
+- The recommended and simpler way of expressing the same idea:
+
+> Tip 46: Don't Chain Method Calls
+
+- basically try not to have more than one "`.`" when you access something.
+- Using intermediate variabeles is NOT the solution, it's the same trap but with extra steps.
+
+```ts
+// Bad style
+amount = customer.orders.last().totals().amount;
+// This is as bad...
+orders = customer.orders;
+last = orders.last();
+totals = last.totals();
+amount = totals.amount;
+```
+
+- In some cases it's okay to have more than "one dot", there is an exception to the rule: when things are very unlikely to change:
+
+```ts
+people
+  .sort(byAge())
+  .slice(0, 10)
+  .map((person) => person.name);
+```
+
+- That is alright because in our case, a person will probably always have an age and name.
+
+2- **The Evils of Globalization**[^evil]
+
+> Tip 47: Avoid Global Data
+
+- When you use global data, e.g. global constants or things like that. coupling become clear when you realize you want to update the implementation of the global, now you must update every place that global variable was used, and that's a lot of area.
+- One of the most clear places where global data bites you is when writing tests. it's much harder to mock.
+- The book said _global data_ and not _global variables_ because wrapping a variable into a singleton is not really solving the problem.
+- 🗨 Modules are singlteons in javascript, so you can easily store global shared data in it.
+
+```ts
+const PORT = 3001;
+export default { PORT };
+```
+
+```ts
+import Config from ./config
+
+Config.PORT
+```
+
+- But alas, it's still global data, just with a longer name. That's why the book used the term "global data", so it includes this case too.
+- A better approach is to hide the global data behind methods. This allows you to have more control so you can add some more logic. It makes code easier to change. It's still global data but it's a better approach.
+
+> Tip 48: If It's Important Enough to Be Global, Wrap It in an API
+
+- 🗨 Here is a simple example of how we might do it
+
+```ts
+const getPort = () => {
+  switch (process.env.NODE_ENV) {
+    case "production":
+      return process.env.PORT
+      break;
+    ...
+    default:
+      return 3001
+  }
+};
+export default { getPort };
+```
+
+- technically in JS you could just put the logic in the module body and keep using `PORT`, but I don't think that's a sound approach.
+- Any mutable external resource is also global data, if your application uses a database, datastore, file system, service API, and so on. Make sure you always wrap those resources behind code that you can control.
+
+3- inheritance
+
+Inheritance adds coupling, it will be discussed separately.
+
 ### 29. Juggling the Real World
+
+- In the past we used typically organize the way we interact with computers based on their limitations. Nowadays we want software to integrate into our world, software has to adapt the our world and how we want to interact with computers. On top of that the word is constantly changing and we keep changing our minds. We got to deal with it.
 
 ### 30. Transforming Programming
 
@@ -1394,6 +1655,4 @@ assert(answer === "Y" || answer === "N");
 
 [^broken-select]: referring to a short story in the book when one programmer mistakenly believed that the `select` system is broken and refused any other explanation.
 
-```
-
-```
+[^evil]: The authors are really talented for coming up with titles
