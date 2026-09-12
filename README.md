@@ -49,6 +49,9 @@ This is the JavaScript edition
   - [Chapter 5: Bend, or Break](#chapter-5-bend-or-break)
     - [28. Decoupling](#28-decoupling)
     - [29. Juggling the Real World](#29-juggling-the-real-world)
+      - [29.1 Events](#291-events)
+      - [29.2.1 Finite State Machines (FSM)](#2921-finite-state-machines-fsm)
+      - [🗨 29.2.2 Finite State Machines (FSM) in BACKEND](#-2922-finite-state-machines-fsm-in-backend)
     - [30. Transforming Programming](#30-transforming-programming)
     - [31. Inheritance Tax](#31-inheritance-tax)
     - [32. Configuration](#32-configuration)
@@ -417,13 +420,13 @@ function printItemDetails(item) {
   console.log(item.name)
   console.log("PRICE:")
   console.log('$' + item.price.toFixed(2))
-  ...etc
+  // ...
 }
 ...
 function printTotalPrice(items) {
   total = sum(items, item => item.price)
   console.log(`Total: $ ${total.toFixed(2)}`)
-  ...etc
+  // ...
 }
 ...
 ```
@@ -444,13 +447,13 @@ function printItemDetails(item) {
   console.log(item.name)
   console.log("PRICE:")
   console.log(formatPrice(item.price))
-  ...etc
+  // ...
 }
 ...
 function printTotalPrice(items) {
   total = sum(items, item => item.price)
   console.log(`Total: ${formatPrice(total)}`)
-  ...etc
+  // ...
 }
 ...
 ```
@@ -837,6 +840,23 @@ subject to {
 ```
 
 - 🗨 Another neat example I saw was a [domain language for editing videos](https://github.com/missing-semester/videos/blob/master/src/msv/lectures/iap2026/lec1.py) that was used to create MIT's The Missing Semster course.
+- I found this example in Eloquent JavaScript
+
+```javascript
+let simpleLevelPlan = `
+......................
+..#................#..
+..#..............=.#..
+..#.........o.o....#..
+..#.@......#####...#..
+..#####............#..
+......#++++++++++++#..
+......##############..
+......................`;
+```
+
+- The code would take this string and parse it to create a level in a simple platforming game. I believe we can consider it as a language. A Domain language for designing levels.
+
 - Ngnix (a web server) has a DSL for server configuration.
 
 ```
@@ -1451,7 +1471,21 @@ public void applyDiscount(customer, order_id, discount) {
 }
 ```
 
-🗨 Here are some other examples I stumbled across
+- In their article [The Art of Enbugging](https://media.pragprog.com/articles/jan_03_enbug.pdf) Dave and Thomas have another nice example
+
+```ts
+myTelevision.frontPanel.switches.power.on();
+```
+
+- Again, for this code to work there are A LOT of assumptions and implicit knowledge that must hold true. The TV object must have a front panel, and the front panel must have some switches, etc.
+- This is best understood in terms of ETC. How much painful it would be when you change the implementation details of the TV object.
+- Instead of _asking_ just _tell_ the television what to do:
+
+```ts
+myTelevision.powerUp();
+```
+
+🗨 Here are some other examples I stumbled across, they are not of the same nature since they don't update the state, just some checks, but I think it's the same concept.
 🗨 I'll try to improve the examples and find better ones as I keep programming
 
 ```ts
@@ -1579,6 +1613,162 @@ Inheritance adds coupling, it will be discussed separately.
 
 - In the past we used typically organize the way we interact with computers based on their limitations. Nowadays we want software to integrate into our world, software has to adapt the our world and how we want to interact with computers. On top of that the word is constantly changing and we keep changing our minds. We got to deal with it.
 
+#### 29.1 Events
+
+- _EVENTS_: an event represents the availability of information
+- An event can be anything "a user clicking a button", "stock update", "search is complete", "fetch the next element", anything really.
+- Our applications might need to deal with events and we have strategies to deal with it.
+
+#### 29.2.1 Finite State Machines (FSM)
+
+- 🗨 Many CS students encounter this concept in an Automata or Compilers class then just forget about it. But it's actually amazing...
+
+> Dave finds that he writes a Finite State Machine just about every week
+
+- FSMs are easy to implement
+- You do not need a complicated external library
+- You don't need to work on hardware or embedded systems to make use of FSMs. It's a general pattern you can use in so many different contexts.
+  🗨
+- We a set of possible _states_, a _current state_, and a set of _events_.
+- Let's say you're building a simple platformer game (like Super Mario), a character can run, jump, etc. The states might be: Idle, Running, Jumping, Falling. The current state is Idle by default.
+- What are the events? basically key presses at certain moments:
+  - You're on ground + Up Arrow Pressed = JumpEvent
+  - You're falling + Touch Ground = StandOnGroundEvent
+- There isn't a specific rule for this, it ususally comes from seeing examples and trying things out.
+- The game dev community LOVE state machines, I highly recommmend [this video](https://youtu.be/d1l26se0Ruk?si=5Fh4E2kfjYbh3_Kb) even if you're not a game dev. It explains state machines well and implements it in a very simple way. It also shows how it pays off when adding new features.
+- There are SO MANY ways to implement state machines, the book has a simple an more declarative way: Nested objects (hash maps)
+- We need a variable containing the current state, and a data structure containing the states and transitions.
+
+```ts
+let currentState = "IDLE";
+const TRANSITIONS = {
+  IDLE: {
+    JumpPressed: { nextState: "JUMPING", action: "Jump" },
+    WalkedOffCliff: { nextState: "FALLING", action: "None" },
+    StartedMoving: { nextState: "RUNNING", action: "None" },
+  },
+  JUMPING: {
+    PassedApex: { nextState: "FALLING", action: "None" },
+    HitCeiling: { nextState: "FALLING", action: "StopUp" },
+    DownPressed: { nextState: "FALLING", action: "Fall" },
+  },
+  // ...,
+};
+```
+
+let's imagine we have a function called `getEventIfAny()` that would return triggered events if any.
+
+This function is executed every game frame
+
+```ts
+function update() {
+  const event = getEventIfAny();
+  // check if it's an invalid transition
+  if (!TRANSITIONS[currentState][event]) {
+    return;
+  }
+  result = TRANSITIONS[currentState][event];
+  // update the current state
+  currentState = result.nextState;
+  // do something based on result.action
+}
+```
+
+let's see another example shown in the book: using state machines to parse
+input: a file containing code
+
+```txt
+This the log function. It can can be used to do "printf debugging"
+console.log("hello", "world")
+```
+
+output: `["printf debugging", "hello", "world"]`
+
+- So basiaclly we would open the input file and extract all strings (between double quotes)
+- You can use a simple regex to do this, but it's worth mentioning that regular expressions have a deep connections with state machines, in fact you can think of regular expression as a DSL for creating state machines.
+- A good first step might thinking about the event, in this case an event is basically "the next character", imagine the text as a stream of characters and we receive one by one.
+- A next good step might be drawing the states and transitions on a sheet of paper
+  #TODO: Add an image here
+
+```js
+const TRANSITIONS = {
+  LookForString: {
+    DoubleQuoteFound: ["InString", "StartNewString"],
+    Default: ["LookForString", "Ignore"],
+  },
+  InString: {
+    DoubleQuoteFound: ["LookForString", "OutputResult"],
+    Default: ["InString", "AddToResult"],
+  },
+};
+```
+
+- this time I use an array of `[NextState, ActionToTake]` instead of `{nextState: ..., action: ...}`. Again, this is to say you implement it the way you want, you can even use anonymous functions as actions or wrap the FSM in its own class. There are so many different ways of implementing state machines.
+  - 🗨 It can feel a bit intimidating at first, at least that's how I felt.
+- You can see find the full code [in here](https://gist.github.com/elfaidi-ghassen/374fc29f5c35cf8989f9631a3cd695c5).
+- 🗨 You can easily type the state machine (use unions for events and actions, etc)
+- 🗨 If you think about it it's almost like a DSL, we define all the transitions in once place and it's easy to read and modify.
+- 🗨 And since a DSL, I tried to generte a visualization from the TRANSITIONS object and it worked so well, you can easily generate mermaid diagrams or a _table view_
+  - 🗨 if you use libraries like XState can can generate visualizations easily.
+- you think of any FSM as table and it's very useful
+
+```
+| State \ Event   | `DoubleQuoteFound` | `Default`       |
+| --------------- | ------------------ | --------------- |
+| `LookForString` | "InString"         | "LookForString" |
+| `InString`      | "LookForString"    | "InString"      |
+```
+
+- 🗨 The rows represent the sates, and you read like this: From the state "LookForString" you execute the "DoubleQuoteFound" event to reach "InString" state. and so on. It may not feel useful here but when you have a lot of states and events and you want to go verify them systematically it becomes invaluable.
+- 🗨 If the transition is invalid you can mark the cell as INVALID or color code it in the spreadsheet.
+  - 🗨 invalid states are awesome because if it's invalid, it means you don't have to include it in the state machine.
+
+- 🗨 State Machines are also useful in building complicated UI. You can use libraries like XState to build complex UI components, say a custom media player.
+  - Even libraries like Redux, [it's kind of a state machine!](https://redux.js.org/style-guide/#treat-reducers-as-state-machines)[^events-actions].
+
+#### 🗨 29.2.2 Finite State Machines (FSM) in BACKEND
+
+- The book quickly mentions this
+  - You can use state machines for multi-step processes like creating an account
+    - maybe you have states like "pending_email", "email_verified", "profile_completed", ...
+  - You can store the current state in external storage (a field in the database, an enum)
+- I spent some time playing around with, and I'll explain it here.
+- Maybe you're building a job application flow, let's say you have a table called `application`. you have a `status` field which is one of `(draft, submitted, under_review, shortlisted, application_accepted, interview_scheduled, interview_completed, ...)`
+- You can build a state machine like before, you could move back to previous states of course and it's more useful when the flow is complicated and has many transitions. I tried to use in a real project and it actually worked well, it looked something like this:
+
+```ts
+// API ENDPOINT: /api/interviews/reschedule
+// ...
+// get the application from the database
+const application = await ApplicationRepo.getById(appId);
+// ...
+// context here is the "state of teh world", it may be needed in guards (conditions)
+const stateMachine = new StateMachine(context);
+const event = Events.reschedule(newDate); // returns a plain JS object which represents an event
+const result = stateMachine.validate(application.status, event);
+if (!result.valid) {
+  throw new ValidationError(result.userMessage);
+}
+ActionExecutor.execute(result.action);
+```
+
+- I took me a long time to create this abstraction and I kept adding features as needed, for instance adding guards to add more conditions for tranitions. one good idea is to include documentation so that others can understand the reason some transition exists. And you can use the documentation when you visualize the state machine.
+
+```ts
+{
+  state: 'interview_scheduled', // current state
+  transitions: {
+    'reschedule': { // an event
+      nextState: 'interview_scheduled',
+      docs:
+        'update the date of the interview. the application remainds in the same state.',
+      action: ...
+    }
+    ...
+  }
+}
+```
+
 ### 30. Transforming Programming
 
 ### 31. Inheritance Tax
@@ -1656,3 +1846,5 @@ Inheritance adds coupling, it will be discussed separately.
 [^broken-select]: referring to a short story in the book when one programmer mistakenly believed that the `select` system is broken and refused any other explanation.
 
 [^evil]: The authors are really talented for coming up with titles
+
+[^events-actions]: _events_ are called _actions_ in Redux so don't get confused.
